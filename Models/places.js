@@ -61,7 +61,6 @@ const placeSchema = new mongoose.Schema({
   },
   openingHours: {
     type: String,
-    required: [true, "Please enter hours"],
   },
   featuredImage: {
     type: String,
