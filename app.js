@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require("dotenv");
 const errorMiddleware = require("./middlewares/errors");
 const ErrorHandler = require("./Utils/ErrorHandler");
+const bodyParser = require("body-parser");
 
 const connectDatabase = require("./config/database");
 // Setting up the config.env file vars
@@ -19,6 +20,10 @@ process.on("uncaughtException", (err) => {
 connectDatabase();
 
 // Setup body parser
+
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(express.static("public"));
 
 app.use(express.json());
 

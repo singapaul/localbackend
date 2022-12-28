@@ -59,9 +59,7 @@ exports.getPlacesInRadius = catchAsyncErrors(async (req, res, next) => {
   const code = req.params.code;
 
   // Getting latitude and longitude from geoCoder with zipcode
-  // console.log("lets figure this out");
-  // console.log(zipcode);
-  // console.log(distance);
+
   const loc = await geoCoder.geocode(code);
   const latitude = loc[0].latitude;
   const longitude = loc[0].longitude;
@@ -76,7 +74,9 @@ exports.getPlacesInRadius = catchAsyncErrors(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
+    postcode: code,
     radius: distance,
+    results: places.length,
     data: places,
   });
 });
