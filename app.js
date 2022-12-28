@@ -31,7 +31,7 @@ app.use(express.json());
 
 const places = require("./routes/places");
 
-app.use("/api/v1", places);
+app.use("api/v1", places);
 
 // Handle unhandled routes
 // This function has to come after the routes are imported in the line above
