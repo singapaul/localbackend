@@ -4,6 +4,13 @@ const dotenv = require("dotenv");
 const errorMiddleware = require("./middlewares/errors");
 const ErrorHandler = require("./Utils/ErrorHandler");
 const bodyParser = require("body-parser");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const xssClean = require("xss-clean");
+const hpp = require("hpp");
+const cors = require("cors");
+
+dotenv.config();
 
 const connectDatabase = require("./config/database");
 // Setting up the config.env file vars
@@ -19,7 +26,26 @@ process.on("uncaughtException", (err) => {
 // Connecting to the database
 connectDatabase();
 
-// Setup body parser
+// prevent XSS attacks (through people trying to send scripts) in the req body
+app.use(xssClean());
+
+// prevent parameter polution
+app.use(hpp());
+
+// setup security headers
+app.use(helmet());
+
+// Setup rate limit
+const limiter = rateLimit({
+  windowsMs: 10 * 60 * 1000, // 10 minutres
+  max: 100,
+});
+
+// Setup CORS - accessible by other domains
+
+app.use(cors());
+
+app.use(limiter);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 
